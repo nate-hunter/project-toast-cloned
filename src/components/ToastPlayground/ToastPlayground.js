@@ -75,15 +75,3 @@ function ToastPlayground() {
 }
 
 export default ToastPlayground;
-
-const VariantRadio = ({ variant }) => {
-  const id = `variant-${variant}`;
-  return (
-    <div key={id} className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-      <label htmlFor="variant-notice">
-        <input id={id} type="radio" name="variant" value={variant} />
-        notice
-      </label>
-    </div>
-  );
-};
