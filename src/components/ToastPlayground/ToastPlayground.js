@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
 
 import Button from '../Button';
+import Toast from '../Toast';
 
 import styles from './ToastPlayground.module.css';
 
 /** Acceptance Criteria:
- * [X] The “Message” textarea should be driven by React state
- * [X] Using the data in the VARIANT_OPTIONS array, render 4 radio buttons within the “Variant” row.
- *      They should all be part of the same group (so that only one can be selected at a time).
- *      They should also be driven by React state.
- * [X] There should be no key warnings in the console.
+ * [x] The toast component should show the message entered in the textarea,
+ *        essentially acting as a “live preview”.
+ * [X] The toast's styling should be affected by the “variant” selected:
+ *        [X] The colors can be set by specifying the appropriate class on the
+ *            top-level <div>. By default, it's set to `styles.notice`,
+ *            but you'll want to dynamically select the class
+ *            based on the variant
+ *              (eg. for a success toast, you'll want to apply `styles.success`).
+ *        [X] The icon can be selected from the ICONS_BY_VARIANT object. Feel free to
+ *            re-organize things however you wish!
+ * [X] The toast should be hidden by default, but can be shown
+ *        by clicking the "Pop Toast!” button.
+ * [X] The toast can be hidden by clicking the “×” button within the toast.
  */
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
@@ -17,6 +26,7 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = useState('');
   const [selectedVariant, setSelectedVariant] = useState('notice');
+  const [isToastPopped, setIsToastPopped] = useState(false);
 
   return (
     <div className={styles.wrapper}>
@@ -24,6 +34,10 @@ function ToastPlayground() {
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
+
+      {isToastPopped && (
+        <Toast message={message} variant={selectedVariant} closeToast={setIsToastPopped} />
+      )}
 
       <div className={styles.controlsWrapper}>
         <div className={styles.row}>
@@ -66,7 +80,7 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button>Pop Toast!</Button>
+            <Button onClick={() => setIsToastPopped(true)}>Pop Toast!</Button>
           </div>
         </div>
       </div>
