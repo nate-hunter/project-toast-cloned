@@ -6,19 +6,19 @@ import Toast from '../Toast';
 import styles from './ToastPlayground.module.css';
 
 /** Acceptance Criteria:
- * [x] The toast component should show the message entered in the textarea,
- *        essentially acting as a “live preview”.
- * [X] The toast's styling should be affected by the “variant” selected:
- *        [X] The colors can be set by specifying the appropriate class on the
- *            top-level <div>. By default, it's set to `styles.notice`,
- *            but you'll want to dynamically select the class
- *            based on the variant
- *              (eg. for a success toast, you'll want to apply `styles.success`).
- *        [X] The icon can be selected from the ICONS_BY_VARIANT object. Feel free to
- *            re-organize things however you wish!
- * [X] The toast should be hidden by default, but can be shown
- *        by clicking the "Pop Toast!” button.
- * [X] The toast can be hidden by clicking the “×” button within the toast.
+ * [ ] Instead of live-editing a single Toast instance, the
+ *        playground should be used to push new toast messages
+ *        onto a stack, rendered inside ToastShelf and shown in
+ *        the corner of the page.
+ * [ ] When “Pop Toast!” is clicked, the message/variant form
+ *        controls should be reset to their default state (message
+ *        should be an empty string, variant should be "notice").
+ * [ ] Clicking the “×” button inside the toast should remove that
+ *        specific toast (but leave the rest untouched).
+ * [ ] A proper <form> tag should be used in the ToastPlayground. The
+ *        toast should be created when submitting the form.
+ * [ ] There should be no key warnings in the console! Keys should be
+ *        unique, and you should not use the index.
  */
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
