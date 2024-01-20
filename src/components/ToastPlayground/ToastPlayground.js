@@ -53,8 +53,6 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {isToastPopped && (
-        <Toast message={message} variant={selectedVariant} closeToast={setIsToastPopped} />
       <ToastShelf toastStack={toastStack} />
 
       <form className={styles.controlsWrapper} onSubmit={handleSubmitToast}>
