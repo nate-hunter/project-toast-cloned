@@ -31,6 +31,18 @@ function ToastPlayground() {
 
   const [toastStack, setToastStack] = useState([]);
 
+  const handleSubmitToast = (e) => {
+    e.preventDefault();
+
+    const newToast = {
+      id: crypto.randomUUID(),
+      message,
+      selectedVariant,
+    };
+    const updatedToastStack = [...toastStack, newToast];
+    setToastStack(updatedToastStack);
+  };
+
   return (
     <div className={styles.wrapper}>
       <header>
@@ -42,7 +54,7 @@ function ToastPlayground() {
         <Toast message={message} variant={selectedVariant} closeToast={setIsToastPopped} />
       <ToastShelf toastStack={toastStack} />
 
-      <div className={styles.controlsWrapper}>
+      <form className={styles.controlsWrapper} onSubmit={handleSubmitToast}>
         <div className={styles.row}>
           <label htmlFor="message" className={styles.label} style={{ alignSelf: 'baseline' }}>
             Message
@@ -86,7 +98,7 @@ function ToastPlayground() {
             <Button onClick={() => setIsToastPopped(true)}>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
