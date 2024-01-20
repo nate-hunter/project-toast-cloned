@@ -24,11 +24,13 @@ import ToastShelf from '../ToastShelf/ToastShelf';
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
-function ToastPlayground() {
-  const [message, setMessage] = useState('');
-  const [selectedVariant, setSelectedVariant] = useState('notice');
-  const [isToastPopped, setIsToastPopped] = useState(false);
+const DEFAULT_TOAST = {
+  message: '',
+  variant: VARIANT_OPTIONS[0],
+};
 
+function ToastPlayground() {
+  const [toast, setToast] = useState(DEFAULT_TOAST);
   const [toastStack, setToastStack] = useState([]);
 
   const handleSubmitToast = (e) => {
@@ -36,8 +38,8 @@ function ToastPlayground() {
 
     const newToast = {
       id: crypto.randomUUID(),
-      message,
-      selectedVariant,
+      message: toast.message,
+      variant: toast.variant,
     };
     const updatedToastStack = [...toastStack, newToast];
     setToastStack(updatedToastStack);
@@ -62,9 +64,10 @@ function ToastPlayground() {
           <div className={styles.inputWrapper}>
             <textarea
               id="message"
+              name="message"
               className={styles.messageInput}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={toast.message}
+              onChange={(e) => setToast({ ...toast, message: e.target.value })}
             />
           </div>
         </div>
@@ -82,8 +85,8 @@ function ToastPlayground() {
                     type="radio"
                     name="variant"
                     value={variant}
-                    checked={variant === selectedVariant}
-                    onChange={() => setSelectedVariant(variant)}
+                    checked={variant === toast.variant}
+                    onChange={() => setToast({ ...toast, variant })}
                   />
                   {variant}
                 </label>
