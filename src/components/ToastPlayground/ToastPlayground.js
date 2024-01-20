@@ -1,32 +1,54 @@
 import React, { useState } from 'react';
 
+import ToastShelf from '../ToastShelf/ToastShelf';
 import Button from '../Button';
-import Toast from '../Toast';
 
 import styles from './ToastPlayground.module.css';
 
 /** Acceptance Criteria:
- * [x] The toast component should show the message entered in the textarea,
- *        essentially acting as a “live preview”.
- * [X] The toast's styling should be affected by the “variant” selected:
- *        [X] The colors can be set by specifying the appropriate class on the
- *            top-level <div>. By default, it's set to `styles.notice`,
- *            but you'll want to dynamically select the class
- *            based on the variant
- *              (eg. for a success toast, you'll want to apply `styles.success`).
- *        [X] The icon can be selected from the ICONS_BY_VARIANT object. Feel free to
- *            re-organize things however you wish!
- * [X] The toast should be hidden by default, but can be shown
- *        by clicking the "Pop Toast!” button.
- * [X] The toast can be hidden by clicking the “×” button within the toast.
+ * [X] Instead of live-editing a single Toast instance, the
+ *        playground should be used to push new toast messages
+ *        onto a stack, rendered inside ToastShelf and shown in
+ *        the corner of the page.
+ * [X] When “Pop Toast!” is clicked, the message/variant form
+ *        controls should be reset to their default state (message
+ *        should be an empty string, variant should be "notice").
+ * [X] Clicking the “×” button inside the toast should remove that
+ *        specific toast (but leave the rest untouched).
+ * [X] A proper <form> tag should be used in the ToastPlayground. The
+ *        toast should be created when submitting the form.
+ * [X] There should be no key warnings in the console! Keys should be
+ *        unique, and you should not use the index.
  */
 
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
+const DEFAULT_TOAST = {
+  message: '',
+  variant: VARIANT_OPTIONS[0],
+};
+
 function ToastPlayground() {
-  const [message, setMessage] = useState('');
-  const [selectedVariant, setSelectedVariant] = useState('notice');
-  const [isToastPopped, setIsToastPopped] = useState(false);
+  const [toast, setToast] = useState(DEFAULT_TOAST);
+  const [toastStack, setToastStack] = useState([]);
+
+  const handleSubmitToast = (e) => {
+    e.preventDefault();
+
+    const newToast = {
+      id: crypto.randomUUID(),
+      message: toast.message,
+      variant: toast.variant,
+    };
+    const updatedToastStack = [...toastStack, newToast];
+    setToastStack(updatedToastStack);
+    setToast(DEFAULT_TOAST);
+  };
+
+  const closeToast = (toastId) => {
+    const filteredToasts = toastStack.filter((toast) => toastId !== toast.id);
+    setToastStack(filteredToasts);
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -35,11 +57,9 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {isToastPopped && (
-        <Toast message={message} variant={selectedVariant} closeToast={setIsToastPopped} />
-      )}
+      <ToastShelf toastStack={toastStack} closeToast={closeToast} />
 
-      <div className={styles.controlsWrapper}>
+      <form className={styles.controlsWrapper} onSubmit={handleSubmitToast}>
         <div className={styles.row}>
           <label htmlFor="message" className={styles.label} style={{ alignSelf: 'baseline' }}>
             Message
@@ -47,9 +67,10 @@ function ToastPlayground() {
           <div className={styles.inputWrapper}>
             <textarea
               id="message"
+              name="message"
               className={styles.messageInput}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={toast.message}
+              onChange={(e) => setToast({ ...toast, message: e.target.value })}
             />
           </div>
         </div>
@@ -67,8 +88,8 @@ function ToastPlayground() {
                     type="radio"
                     name="variant"
                     value={variant}
-                    checked={variant === selectedVariant}
-                    onChange={() => setSelectedVariant(variant)}
+                    checked={variant === toast.variant}
+                    onChange={() => setToast({ ...toast, variant })}
                   />
                   {variant}
                 </label>
@@ -80,10 +101,10 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button onClick={() => setIsToastPopped(true)}>Pop Toast!</Button>
+            <Button>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
