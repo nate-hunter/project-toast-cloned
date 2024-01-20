@@ -12,7 +12,9 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-const Toast = ({ message, variant, closeToast, children }) => {
+const Toast = ({ toast, closeToast, children }) => {
+  const { id, message, variant } = toast;
+
   const Icon = ICONS_BY_VARIANT[variant];
 
   return (
@@ -21,7 +23,7 @@ const Toast = ({ message, variant, closeToast, children }) => {
         <Icon size={24} />
       </div>
       <p className={styles.content}>{children ?? message}</p>
-      <button className={styles.closeButton} onClick={() => closeToast(false)}>
+      <button className={styles.closeButton} onClick={() => closeToast(id)}>
         <X size={24} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>

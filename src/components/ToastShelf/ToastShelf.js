@@ -4,12 +4,12 @@ import styles from './ToastShelf.module.css';
 
 import Toast from '../Toast/Toast';
 
-const ToastShelf = ({ toastStack }) => {
+const ToastShelf = ({ toastStack, closeToast }) => {
   return (
     <ol className={styles.wrapper}>
-      {toastStack.map((toast, i) => (
+      {toastStack.map((toast) => (
         <li key={toast.id} className={styles.toastWrapper}>
-          <Toast variant={toast.selectedVariant} message={toast.message} />
+          <Toast toast={toast} closeToast={closeToast} />
         </li>
       ))}
     </ol>
