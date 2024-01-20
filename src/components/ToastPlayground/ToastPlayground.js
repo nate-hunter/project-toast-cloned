@@ -46,6 +46,11 @@ function ToastPlayground() {
     setToast(DEFAULT_TOAST);
   };
 
+  const closeToast = (toastId) => {
+    const filteredToasts = toastStack.filter((toast) => toastId !== toast.id);
+    setToastStack(filteredToasts);
+  };
+
   return (
     <div className={styles.wrapper}>
       <header>
@@ -53,7 +58,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <ToastShelf toastStack={toastStack} />
+      <ToastShelf toastStack={toastStack} closeToast={closeToast} />
 
       <form className={styles.controlsWrapper} onSubmit={handleSubmitToast}>
         <div className={styles.row}>
