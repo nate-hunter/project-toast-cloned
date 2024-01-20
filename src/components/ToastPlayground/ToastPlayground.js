@@ -4,6 +4,7 @@ import Button from '../Button';
 import Toast from '../Toast';
 
 import styles from './ToastPlayground.module.css';
+import ToastShelf from '../ToastShelf/ToastShelf';
 
 /** Acceptance Criteria:
  * [ ] Instead of live-editing a single Toast instance, the
@@ -28,6 +29,8 @@ function ToastPlayground() {
   const [selectedVariant, setSelectedVariant] = useState('notice');
   const [isToastPopped, setIsToastPopped] = useState(false);
 
+  const [toastStack, setToastStack] = useState([]);
+
   return (
     <div className={styles.wrapper}>
       <header>
@@ -37,7 +40,7 @@ function ToastPlayground() {
 
       {isToastPopped && (
         <Toast message={message} variant={selectedVariant} closeToast={setIsToastPopped} />
-      )}
+      <ToastShelf toastStack={toastStack} />
 
       <div className={styles.controlsWrapper}>
         <div className={styles.row}>
