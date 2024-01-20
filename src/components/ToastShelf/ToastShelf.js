@@ -3,17 +3,18 @@ import React from 'react';
 import Toast from '../Toast';
 import styles from './ToastShelf.module.css';
 
-function ToastShelf() {
+import Toast from '../Toast/Toast';
+
+const ToastShelf = ({ toastStack }) => {
   return (
     <ol className={styles.wrapper}>
-      <li className={styles.toastWrapper}>
-        <Toast variant="notice">Example notice toast</Toast>
+      {toastStack.map((toast, i) => (
+        <li key={toast.id} className={styles.toastWrapper}>
+          <Toast variant={toast.selectedVariant} message={toast.message} />
       </li>
-      <li className={styles.toastWrapper}>
-        <Toast variant="error">Example error toast</Toast>
-      </li>
+      ))}
     </ol>
   );
-}
+};
 
 export default ToastShelf;
