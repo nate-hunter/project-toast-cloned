@@ -43,6 +43,7 @@ function ToastPlayground() {
     };
     const updatedToastStack = [...toastStack, newToast];
     setToastStack(updatedToastStack);
+    setToast(DEFAULT_TOAST);
   };
 
   return (
